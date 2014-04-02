@@ -36,7 +36,8 @@
 								<option id="dk.xpg.msp430eclipse.compiler.option.includes.files.927716940" name="Include files (-include)" superClass="dk.xpg.msp430eclipse.compiler.option.includes.files" valueType="includeFiles">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/spi_msp430.h}&quot;"/>
 								</option>
-								<option id="dk.xpg.msp430eclipse.compiler.option.optimization.flags.1625064113" name="Other optimization flags" superClass="dk.xpg.msp430eclipse.compiler.option.optimization.flags" value="" valueType="string"/>
+								<option id="dk.xpg.msp430eclipse.compiler.option.optimization.flags.1625064113" name="Other optimization flags" superClass="dk.xpg.msp430eclipse.compiler.option.optimization.flags" value="-fpack-struct" valueType="string"/>
+								<option id="dk.xpg.msp430eclipse.compiler.option.debugging.flags.943822288" superClass="dk.xpg.msp430eclipse.compiler.option.debugging.flags" value="" valueType="string"/>
 								<inputType id="dk.xpg.msp430eclipse.tool.compiler.gcc.input.1569041386" name="C Source File" superClass="dk.xpg.msp430eclipse.tool.compiler.gcc.input"/>
 								<inputType id="dk.xpg.msp430eclipse.tool.compiler.gcc.input.cc.689716839" name="C++ Source File" superClass="dk.xpg.msp430eclipse.tool.compiler.gcc.input.cc"/>
 							</tool>
@@ -95,7 +96,7 @@
 								<option id="dk.xpg.msp430eclipse.compiler.option.includes.files.1292578586" name="Include files (-include)" superClass="dk.xpg.msp430eclipse.compiler.option.includes.files" valueType="includeFiles">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/spi_msp430.h}&quot;"/>
 								</option>
-								<option id="dk.xpg.msp430eclipse.compiler.option.optimization.flags.1194417856" superClass="dk.xpg.msp430eclipse.compiler.option.optimization.flags" value="-fpack-struct" valueType="string"/>
+								<option id="dk.xpg.msp430eclipse.compiler.option.optimization.flags.1194417856" name="Other optimization flags" superClass="dk.xpg.msp430eclipse.compiler.option.optimization.flags" value="-fpack-struct" valueType="string"/>
 								<inputType id="dk.xpg.msp430eclipse.tool.compiler.gcc.input.39028044" name="C Source File" superClass="dk.xpg.msp430eclipse.tool.compiler.gcc.input"/>
 								<inputType id="dk.xpg.msp430eclipse.tool.compiler.gcc.input.cc.976582994" name="C++ Source File" superClass="dk.xpg.msp430eclipse.tool.compiler.gcc.input.cc"/>
 							</tool>
@@ -142,4 +143,5 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
