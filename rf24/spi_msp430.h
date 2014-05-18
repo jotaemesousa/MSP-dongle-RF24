@@ -10,10 +10,17 @@
 
 #include <msp430.h>
 
-//#define CS_PIN_BASE P1OUT
+
+
+
 #define CS_PORT		P2OUT
 #define CS_DIR		P2DIR
 #define CS_PIN 		BIT6
+#define CS_SEL 		P2SEL
+#define CS_SEL2 	P2SEL2
+#define CE_SEL 		P2SEL
+#define CE_SEL2 	P2SEL2
+
 
 #define SIMO_PIN    BIT7
 #define SOMI_PIN    BIT6
@@ -29,9 +36,5 @@
 #define IRQ_DIR		P1DIR
 
 
-#define BLINK_RED_LED	P2OUT ^= BIT1;
-#define BLINK_GREEN_LED	P2OUT ^= BIT0;
-#define GREEN_LED_OFF	P2OUT &= ~BIT0;
-#define RED_LED_OFF	P2OUT &= ~BIT1;
 
 #endif /* SPI_MSP430_H_ */

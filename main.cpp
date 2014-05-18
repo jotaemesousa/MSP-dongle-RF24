@@ -9,14 +9,21 @@
 #include <msp430.h>
 #include "remote_defines.h"
 #include "string.h"
-
+#include "spi.h"
+#include "timer_msp.h"
 extern "C"
 {
-#include "spi.h"
 #include "conio/conio.h"
 #include "serial/serial.h"
-#include "timer_msp.h"
+
+
 }
+
+#define BLINK_RED_LED	P2OUT ^= BIT1;
+#define BLINK_GREEN_LED	P2OUT ^= BIT0;
+#define GREEN_LED_OFF	P2OUT &= ~BIT0;
+#define RED_LED_OFF	P2OUT &= ~BIT1;
+
 
 // Function prototypes
 void setup_adc(void);
