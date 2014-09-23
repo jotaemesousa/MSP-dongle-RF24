@@ -32,9 +32,10 @@ void setup_push_buttons(void);
 void setup_leds(void);
 void serial_receive(void);
 uint8_t serial_parse(char *buffer);
+uint8_t buildByteToSend(void);
 
 int b = 0;
-uint8_t led = 0;
+uint8_t led = 0, auto_off = 0, force_off = 0, tim = 0;
 // main loop
 int main(void)
 {
@@ -43,15 +44,7 @@ int main(void)
 	BCSCTL1 = CALBC1_8MHZ;            // Set DCO to 1MHz
 	DCOCTL = CALDCO_8MHZ;
 
-	unsigned long int last_millis = 0;
 	default_timer();
-
-	// Setup ADC
-	//setup_adc();
-	unsigned int ADC_values[2];
-
-	// Setup push buttons
-	//setup_push_buttons();
 
 	// Setup LEDs
 	setup_leds();
@@ -66,10 +59,7 @@ int main(void)
 	ferrari.linear = 0;
 	ferrari.buttons = 0;
 
-	cio_printf(":Init UART;\n");
 	serial_init(57600);
-	cio_printf(":Done;\n");
-
 
 	RF24 radio = RF24();
 
@@ -118,8 +108,9 @@ int main(void)
 
 					if((ferrari.buttons & ASK_BIT) == ASK_BIT)
 					{
+						uint8_t temp = buildByteToSend();
 						radio.stopListening();
-						radio.write(&led, sizeof(uint8_t));
+						radio.write(&temp, sizeof(uint8_t));
 						radio.startListening();
 					}
 				}
@@ -143,7 +134,7 @@ void serial_receive(void)
 
 		inChar = serial_recv();                // read from port
 
-		if(index_ < 18)                // read up to 98 bytes
+		if(index_ < 18)                // read up to 18 bytes
 		{
 			if(inChar == ':')
 			{
@@ -202,7 +193,7 @@ uint8_t serial_parse(char *buffer)
 	int d1;
 	//char f1;last_received_byte_millis
 
-	if(!strncmp(buffer,":led",4))                // motor cmd
+	if(!strncmp(buffer,":led",4))                // LED cmd
 	{
 		if(buffer[6] == ';')
 		{
@@ -217,7 +208,56 @@ uint8_t serial_parse(char *buffer)
 		}
 		return 0;
 	}
+	else if(!strncmp(buffer,":a_off",6))             // auto off cmd
+	{
+		if(buffer[8] == ';')
+		{
+			if(buffer[7] == '1')		// 7
+			{
+				auto_off = 1;
+			}
+			else if(buffer[7] == '0')
+			{
+				auto_off = 0;
+			}
+		}
+		return 0;
+	}
+	else if(!strncmp(buffer,":tim ",5))                // auto off timer cmd
+	{
+		if(buffer[6] == ';')
+		{
+			if(buffer[5] >= '1' && buffer[5] <= '9')
+			{
+				tim = buffer[5] - '1' + 1;
+			}
+			else if(buffer[5] >= 'A' && buffer[5] <= 'F')
+			{
+				tim = buffer[5] - 'A' + 10;
+			}
+		}
+		return 0;
+	}
+	else if(!strncmp(buffer,":f_off;",7))                // force off cmd
+	{
+		force_off = 1;
+		return 0;
+	}
+
 	return 1;
+}
+
+uint8_t buildByteToSend(void)
+{
+	// 0b<4bits, time>0<force off bit><auto off bit><led bit>
+	uint8_t to_send = 0;
+	to_send |= led ? LED_BIT : 0x00;
+	to_send |= auto_off ? AUTO_OFF_BIT : 0x00;
+	to_send |= force_off ? FORCE_OFF_BIT: 0x00;
+	to_send |= (tim & 0x0F) << 4;
+	force_off = 0;
+	tim = 0;
+	return to_send;
 }
 
 void setup_adc(void)
