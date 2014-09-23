@@ -36,6 +36,7 @@ uint8_t buildByteToSend(void);
 
 int b = 0;
 uint8_t led = 0, auto_off = 0, force_off = 0, tim = 0;
+uint32_t last_force_off = 0;
 // main loop
 int main(void)
 {
@@ -241,6 +242,7 @@ uint8_t serial_parse(char *buffer)
 	else if(!strncmp(buffer,":f_off;",7))                // force off cmd
 	{
 		force_off = 1;
+		last_force_off = millis();
 		return 0;
 	}
 
@@ -253,7 +255,10 @@ uint8_t buildByteToSend(void)
 	uint8_t to_send = 0;
 	to_send |= led ? LED_BIT : 0x00;
 	to_send |= auto_off ? AUTO_OFF_BIT : 0x00;
-	to_send |= force_off ? FORCE_OFF_BIT: 0x00;
+	if(millis() - last_force_off < 5000)
+	{
+		to_send |= force_off ? FORCE_OFF_BIT: 0x00;
+	}
 	to_send |= (tim & 0x0F) << 4;
 	force_off = 0;
 	tim = 0;
